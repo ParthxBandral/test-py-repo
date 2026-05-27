@@ -54,7 +54,7 @@ export default function LiveTrainerPage() {
     try {
       const constraints = {
         video: {
-          facingMode: 'user',
+          facingMode: { ideal: 'user' },
           width: { ideal: 1280 },
           height: { ideal: 720 }
         },
@@ -66,9 +66,18 @@ export default function LiveTrainerPage() {
       
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
-        videoRef.current.onloadedmetadata = () => {
-          videoRef.current?.play().catch(err => console.error('Play error:', err));
-        };
+        
+        // Ensure video plays on iOS
+        const playPromise = videoRef.current.play();
+        if (playPromise !== undefined) {
+          playPromise
+            .then(() => {
+              console.log('Video playing successfully');
+            })
+            .catch(error => {
+              console.error('Play error:', error);
+            });
+        }
       }
       
       setCameraPermission("granted");
@@ -90,11 +99,24 @@ export default function LiveTrainerPage() {
   };
 
   const stopCamera = () => {
+    if (videoRef.current) {
+      videoRef.current.srcObject = null;
+    }
     if (streamRef.current) {
-      streamRef.current.getTracks().forEach(track => track.stop());
+      streamRef.current.getTracks().forEach(track => {
+        track.stop();
+        console.log('Stopped track:', track.kind);
+      });
       streamRef.current = null;
     }
   };
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      stopCamera();
+    };
+  }, []);
 
   // Initialize Speech and load Voice
   useEffect(() => {
@@ -349,15 +371,28 @@ export default function LiveTrainerPage() {
                 </div>
 
                 <div className="grid md:grid-cols-[1.5fr_1fr] gap-0">
-                  <div className="relative aspect-video md:aspect-auto min-h-[250px] sm:min-h-[350px] md:min-h-[450px] border-b md:border-b-0 md:border-r border-foreground bg-foreground/5 flex items-center justify-center">
+                  <div className="relative aspect-video md:aspect-auto min-h-[250px] sm:min-h-[350px] md:min-h-[450px] border-b md:border-b-0 md:border-r border-foreground bg-black flex items-center justify-center overflow-hidden">
                     {isRunning ? (
-                      <video 
-                        ref={videoRef}
-                        autoPlay
-                        playsInline
-                        muted
-                        className="w-full h-full object-cover"
-                      />
+                      <>
+                        <video 
+                          ref={videoRef}
+                          autoPlay
+                          playsInline
+                          muted
+                          webkit-playsinline="true"
+                          style={{ 
+                            width: '100%', 
+                            height: '100%', 
+                            objectFit: 'cover',
+                            display: 'block',
+                            transform: 'scaleX(-1)'
+                          }}
+                        />
+                        <canvas 
+                          ref={canvasRef}
+                          style={{ display: 'none' }}
+                        />
+                      </>
                     ) : (
                       <div className="text-center text-muted-foreground">
                         <Camera className="h-12 w-12 mx-auto mb-4 opacity-50" />
