@@ -52,32 +52,40 @@ export default function LiveTrainerPage() {
   // Initialize Camera for iPhone/Mobile
   const initializeCamera = async () => {
     try {
+      // Simple constraints that work better on iOS Safari
       const constraints = {
         video: {
-          facingMode: { ideal: 'user' },
-          width: { ideal: 1280 },
-          height: { ideal: 720 }
+          facingMode: 'user'
         },
         audio: false
       };
       
+      console.log('Requesting camera with constraints:', constraints);
       const stream = await navigator.mediaDevices.getUserMedia(constraints);
+      console.log('Got stream:', stream);
+      
       streamRef.current = stream;
       
       if (videoRef.current) {
+        console.log('Setting srcObject');
         videoRef.current.srcObject = stream;
         
-        // Ensure video plays on iOS
-        const playPromise = videoRef.current.play();
-        if (playPromise !== undefined) {
-          playPromise
-            .then(() => {
-              console.log('Video playing successfully');
-            })
-            .catch(error => {
-              console.error('Play error:', error);
+        // Wait for video to be ready
+        videoRef.current.onloadedmetadata = () => {
+          console.log('Video metadata loaded, playing');
+          videoRef.current?.play().catch(err => {
+            console.error('Play error:', err);
+          });
+        };
+        
+        // Force play
+        setTimeout(() => {
+          if (videoRef.current) {
+            videoRef.current.play().catch(err => {
+              console.error('Delayed play error:', err);
             });
-        }
+          }
+        }, 500);
       }
       
       setCameraPermission("granted");
@@ -376,21 +384,17 @@ export default function LiveTrainerPage() {
                       <>
                         <video 
                           ref={videoRef}
-                          autoPlay
-                          playsInline
-                          muted
-                          webkit-playsinline="true"
+                          autoPlay={true}
+                          playsInline={true}
+                          muted={true}
+                          className="w-full h-full"
                           style={{ 
-                            width: '100%', 
-                            height: '100%', 
-                            objectFit: 'cover',
                             display: 'block',
-                            transform: 'scaleX(-1)'
+                            objectFit: 'cover',
+                            backgroundColor: '#000',
+                            WebkitTransform: 'scaleX(-1)',
+                            transform: 'scaleX(-1)',
                           }}
-                        />
-                        <canvas 
-                          ref={canvasRef}
-                          style={{ display: 'none' }}
                         />
                       </>
                     ) : (
