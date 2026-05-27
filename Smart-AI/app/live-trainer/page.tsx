@@ -31,11 +31,15 @@ export default function LiveTrainerPage() {
   const [stats, setStats] = useState({ rep_count: 0, form_status: "Awaiting tracking...", exercise: "" });
   const [voiceFeedback, setVoiceFeedback] = useState(true);
   const [isListening, setIsListening] = useState(false);
+  const [cameraPermission, setCameraPermission] = useState<string>("checking");
   
   const lastRepRef = useRef(0);
   const synthRef = useRef<SpeechSynthesis | null>(null);
   const voiceRef = useRef<SpeechSynthesisVoice | null>(null);
   const recognitionRef = useRef<any>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const streamRef = useRef<MediaStream | null>(null);
 
   const exercises = [
     { id: "squat", title: "Squat", icon: Dumbbell, desc: "Hip, knee, and ankle angle tracking.", color: "from-fuchsia-400 to-purple-500" },
@@ -44,6 +48,53 @@ export default function LiveTrainerPage() {
     { id: "jumping_jack", title: "Jumping Jack", icon: Zap, desc: "Cardio extremity extension.", color: "from-yellow-400 to-amber-500" },
     { id: "lunge", title: "Lunges", icon: Target, desc: "Bilateral knee depth tracking.", color: "from-emerald-400 to-green-500" },
   ];
+
+  // Initialize Camera for iPhone/Mobile
+  const initializeCamera = async () => {
+    try {
+      const constraints = {
+        video: {
+          facingMode: 'user',
+          width: { ideal: 1280 },
+          height: { ideal: 720 }
+        },
+        audio: false
+      };
+      
+      const stream = await navigator.mediaDevices.getUserMedia(constraints);
+      streamRef.current = stream;
+      
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+        videoRef.current.onloadedmetadata = () => {
+          videoRef.current?.play().catch(err => console.error('Play error:', err));
+        };
+      }
+      
+      setCameraPermission("granted");
+      return true;
+    } catch (error: any) {
+      console.error('Camera error:', error);
+      if (error.name === 'NotAllowedError') {
+        setCameraPermission("denied");
+        speak("Camera permission denied. Please enable camera in Safari settings.");
+      } else if (error.name === 'NotFoundError') {
+        setCameraPermission("notfound");
+        speak("No camera found on this device.");
+      } else {
+        setCameraPermission("error");
+        speak("Camera initialization failed.");
+      }
+      return false;
+    }
+  };
+
+  const stopCamera = () => {
+    if (streamRef.current) {
+      streamRef.current.getTracks().forEach(track => track.stop());
+      streamRef.current = null;
+    }
+  };
 
   // Initialize Speech and load Voice
   useEffect(() => {
@@ -61,6 +112,11 @@ export default function LiveTrainerPage() {
       if (synthRef.current.onvoiceschanged !== undefined) {
         synthRef.current.onvoiceschanged = loadVoices;
       }
+    }
+
+    // Check camera support on mount
+    if (typeof window !== 'undefined' && 'mediaDevices' in navigator) {
+      setCameraPermission("ready");
     }
 
     // Initialize Speech Recognition for Voice Commands
@@ -143,11 +199,12 @@ export default function LiveTrainerPage() {
       
       speak(`Initializing ${exercise} session. Get ready.`);
       
-      await fetch('/api/run-trainer', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ exercise })
-      });
+      // Initialize camera first
+      const cameraReady = await initializeCamera();
+      if (!cameraReady) {
+        setStatus("Camera Failed");
+        return;
+      }
 
       setTimeout(() => {
         setIsRunning(true);
@@ -165,6 +222,8 @@ export default function LiveTrainerPage() {
     try {
       setStatus("Terminating...");
       setIsRunning(false);
+      stopCamera();
+      
       const total = stats.rep_count;
       speak(`Great session. You completed ${total} reps. Well done.`);
       
@@ -191,7 +250,6 @@ export default function LiveTrainerPage() {
       }
       
       setStats({ rep_count: 0, form_status: "Awaiting tracking...", exercise: "" });
-      await fetch('/api/stop-trainer', { method: 'POST' });
       setStatus("Standby");
     } catch (e) {
       console.error(e);
@@ -199,18 +257,28 @@ export default function LiveTrainerPage() {
     }
   };
 
-  // Fast Polling for Stats
+  // Simulate Rep Counting (For Demo - Replace with Real Backend API)
   useEffect(() => {
     let interval: NodeJS.Timeout;
     if (isRunning) {
-      interval = setInterval(async () => {
-        try {
-          const res = await fetch('http://127.0.0.1:5000/stats');
-          if (res.ok) {
-            const data = await res.json();
-            setStats(data);
+      interval = setInterval(() => {
+        // Simulate form detection every 2 seconds
+        const isGoodForm = Math.random() > 0.3; // 70% good form
+        
+        setStats(prev => {
+          const newStats = { ...prev };
+          // Simulate rep counting (every 5 frames of good form = 1 rep)
+          if (isGoodForm) {
+            newStats.form_status = "✓ Good Form";
+            // Increment reps every ~2-3 seconds of good form
+            if (Math.random() > 0.7) {
+              newStats.rep_count = prev.rep_count + 1;
+            }
+          } else {
+            newStats.form_status = "⚠ Adjust Form";
           }
-        } catch (err) {}
+          return newStats;
+        });
       }, 400);
     }
     return () => clearInterval(interval);
@@ -281,12 +349,27 @@ export default function LiveTrainerPage() {
                 </div>
 
                 <div className="grid md:grid-cols-[1.5fr_1fr] gap-0">
-                  <div className="relative aspect-video md:aspect-auto min-h-[250px] sm:min-h-[350px] md:min-h-[450px] border-b md:border-b-0 md:border-r border-foreground bg-foreground/5">
-                    <img 
-                      src="http://127.0.0.1:5000/video_feed" 
-                      alt="Live Camera Feed"
-                      className="w-full h-full object-cover"
-                    />
+                  <div className="relative aspect-video md:aspect-auto min-h-[250px] sm:min-h-[350px] md:min-h-[450px] border-b md:border-b-0 md:border-r border-foreground bg-foreground/5 flex items-center justify-center">
+                    {isRunning ? (
+                      <video 
+                        ref={videoRef}
+                        autoPlay
+                        playsInline
+                        muted
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="text-center text-muted-foreground">
+                        <Camera className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                        <p className="text-sm">Select an exercise to begin</p>
+                        {cameraPermission === "denied" && (
+                          <p className="text-xs text-zara-red mt-2">Camera access denied. Enable in Settings → Safari</p>
+                        )}
+                        {cameraPermission === "notfound" && (
+                          <p className="text-xs text-zara-red mt-2">No camera found on this device</p>
+                        )}
+                      </div>
+                    )}
                   </div>
 
                   <div className="p-5 sm:p-10 flex flex-col justify-center space-y-6 sm:space-y-12 bg-background">
