@@ -35,30 +35,30 @@ export default function TrainersPage() {
     <motion.div
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
-      className="max-w-7xl mx-auto space-y-12"
+      className="w-full max-w-7xl mx-auto space-y-8 sm:space-y-12"
     >
-      <header className="border-b border-border pb-8 flex flex-col md:flex-row justify-between items-end gap-6">
+      <header className="border-b border-border pb-6 sm:pb-8 flex flex-col md:flex-row justify-between items-start md:items-end gap-5 sm:gap-6">
         <div>
           <p className="zara-subheading mb-2">Expert Roster</p>
-          <h1 className="text-4xl font-light tracking-tight text-foreground">AI Trainer Studio</h1>
+          <h1 className="text-3xl sm:text-4xl font-light tracking-tight text-foreground">AI Trainer Studio</h1>
         </div>
-        <div className="flex gap-4">
-           <div className="px-4 py-2 border border-border text-[10px] font-black uppercase tracking-widest text-muted-foreground">
+        <div className="flex gap-4 w-full md:w-auto">
+           <div className="w-full md:w-auto px-4 py-2 border border-border text-[10px] font-black uppercase tracking-widest text-muted-foreground">
               Sort by: <span className="text-foreground">Performance</span>
            </div>
         </div>
       </header>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 sm:gap-8">
         {trainers.map((trainer) => (
           <div key={trainer.name} className="minimal-card p-0 overflow-hidden group">
             <div className="relative aspect-[4/5] bg-zinc-900 overflow-hidden">
                <img src={trainer.image} alt={trainer.name} className="w-full h-full object-cover grayscale opacity-80 group-hover:scale-105 group-hover:opacity-100 transition-all duration-700" />
                <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60" />
-               <div className="absolute bottom-6 left-6 right-6 flex justify-between items-end">
+               <div className="absolute bottom-5 sm:bottom-6 left-5 sm:left-6 right-5 sm:right-6 flex justify-between items-end gap-4">
                   <div className="space-y-1">
                      <p className="text-[10px] font-black uppercase tracking-widest text-white/70">Certified AI</p>
-                     <h3 className="text-2xl font-light text-white">{trainer.name}</h3>
+                     <h3 className="text-xl sm:text-2xl font-light text-white">{trainer.name}</h3>
                   </div>
                   <div className="flex items-center gap-1 text-white">
                      <Star className="h-3 w-3 fill-white" />
@@ -66,13 +66,13 @@ export default function TrainersPage() {
                   </div>
                </div>
             </div>
-            <div className="p-8 space-y-6">
-               <div className="grid grid-cols-2 gap-4 text-[10px] uppercase tracking-widest font-black text-muted-foreground">
+            <div className="p-5 sm:p-8 space-y-6">
+               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-[10px] uppercase tracking-widest font-black text-muted-foreground">
                   <div className="space-y-1">
                      <p>Specialty</p>
                      <p className="text-foreground">{trainer.specialty}</p>
                   </div>
-                  <div className="space-y-1 text-right">
+                  <div className="space-y-1 sm:text-right">
                      <p>Track Record</p>
                      <p className="text-foreground">{trainer.experience}</p>
                   </div>

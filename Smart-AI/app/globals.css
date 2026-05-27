@@ -58,6 +58,18 @@
   body {
     @apply bg-background text-foreground font-sans antialiased;
     font-feature-settings: "rlig" 1, "calt" 1;
+    overflow-x: hidden;
+  }
+
+  html {
+    overflow-x: hidden;
+  }
+
+  img,
+  video,
+  canvas,
+  svg {
+    max-width: 100%;
   }
 }
 
@@ -67,11 +79,11 @@
   }
 
   .minimal-card {
-    @apply border border-border bg-background p-6 sm:p-10 transition-all duration-500 hover:border-foreground;
+    @apply border border-border bg-background p-5 sm:p-10 transition-all duration-500 hover:border-foreground;
   }
 
   .minimal-button {
-    @apply w-full py-4 border border-border text-[10px] uppercase tracking-[0.2em] font-black hover:bg-foreground hover:text-background transition-all;
+    @apply w-full py-4 px-3 border border-border text-[10px] uppercase tracking-[0.14em] sm:tracking-[0.2em] font-black hover:bg-foreground hover:text-background transition-all;
   }
 
   .glass-panel {

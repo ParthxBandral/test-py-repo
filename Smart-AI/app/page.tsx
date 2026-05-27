@@ -76,19 +76,19 @@ export default function DashboardPage() {
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
-      className="space-y-12 max-w-7xl mx-auto"
+      className="w-full max-w-7xl mx-auto space-y-8 sm:space-y-12"
     >
-      <header className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-border pb-6">
+      <header className="flex flex-col md:flex-row md:items-end justify-between gap-5 sm:gap-6 border-b border-border pb-6">
         <div>
           <p className="zara-subheading mb-2">
             Dashboard
           </p>
-          <h1 className="text-4xl font-light tracking-tight text-foreground flex items-center gap-3">
+          <h1 className="text-3xl sm:text-4xl font-light tracking-tight text-foreground flex items-center gap-3">
             Command Center
           </h1>
         </div>
-        <div className="flex items-center gap-4 text-sm">
-          <div className="flex flex-col items-end">
+        <div className="flex items-center justify-between sm:justify-start gap-4 text-sm w-full md:w-auto">
+          <div className="flex flex-col items-start sm:items-end">
             <p className="zara-subheading">Today's Utilization</p>
             <p className="text-2xl font-light text-foreground">86%</p>
           </div>
@@ -99,17 +99,17 @@ export default function DashboardPage() {
         </div>
       </header>
 
-      <section className="grid grid-cols-1 lg:grid-cols-1 gap-12">
+      <section className="grid grid-cols-1 lg:grid-cols-1 gap-8 sm:gap-12">
         {/* Attendance Heatmap */}
         <div className="flex flex-col gap-6">
-          <div className="flex items-center justify-between border-b border-border pb-2">
-            <h2 className="text-lg font-light tracking-wide uppercase text-foreground">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-border pb-2">
+            <h2 className="text-base sm:text-lg font-light tracking-wide uppercase text-foreground">
               Attendance Heatmap
             </h2>
             <span className="zara-subheading">Last 4 weeks</span>
           </div>
 
-          <div className="flex items-center justify-between text-[10px] text-muted-foreground uppercase tracking-[0.2em] font-bold">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-[10px] text-muted-foreground uppercase tracking-[0.16em] sm:tracking-[0.2em] font-bold">
             <span>Low Utilization</span>
             <div className="flex gap-2">
               <span className="h-2 w-10 bg-foreground/5 border border-border" />
@@ -157,11 +157,11 @@ export default function DashboardPage() {
       </section>
 
       {/* AI sections preview */}
-      <section className="grid grid-cols-1 lg:grid-cols-3 gap-12 pt-8">
+      <section className="grid grid-cols-1 lg:grid-cols-3 gap-8 sm:gap-12 pt-6 sm:pt-8">
         {/* AI Workout Blocks */}
         <div className="space-y-6">
-          <div className="flex items-center justify-between border-b border-border pb-2">
-            <h2 className="text-lg font-light tracking-wide uppercase text-foreground">Workout Blocks</h2>
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-border pb-2">
+            <h2 className="text-base sm:text-lg font-light tracking-wide uppercase text-foreground">Workout Blocks</h2>
             <div className="inline-flex items-center gap-2 px-2 py-1 bg-foreground/5 border border-border">
               <Sparkles className="h-3 w-3 text-muted-foreground" strokeWidth={1.5} />
               <span className="text-[9px] uppercase tracking-widest text-muted-foreground font-bold">AI Synchronized</span>
@@ -189,8 +189,8 @@ export default function DashboardPage() {
 
         {/* AI Nutrition Canvas */}
         <div className="space-y-6">
-          <div className="flex items-center justify-between border-b border-border pb-2">
-            <h2 className="text-lg font-light tracking-wide uppercase text-foreground">Nutrition Canvas</h2>
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-border pb-2">
+            <h2 className="text-base sm:text-lg font-light tracking-wide uppercase text-foreground">Nutrition Canvas</h2>
             <div className="inline-flex items-center gap-2 px-2 py-1 bg-foreground/5 border border-border">
               <Sparkles className="h-3 w-3 text-muted-foreground" strokeWidth={1.5} />
               <span className="text-[9px] uppercase tracking-widest text-muted-foreground font-bold">Macro Optimized</span>
@@ -218,8 +218,8 @@ export default function DashboardPage() {
 
         {/* Previous Sessions (Neural Logs) */}
         <div className="space-y-6">
-          <div className="flex items-center justify-between border-b border-border pb-2">
-            <h2 className="text-lg font-light tracking-wide uppercase text-foreground">Session History</h2>
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-border pb-2">
+            <h2 className="text-base sm:text-lg font-light tracking-wide uppercase text-foreground">Session History</h2>
             <div className="inline-flex items-center gap-2 px-2 py-1 bg-foreground/5 border border-border">
               <Activity className="h-3 w-3 text-red-600 animate-pulse" strokeWidth={1.5} />
               <span className="text-[9px] uppercase tracking-widest text-muted-foreground font-bold">Neural Logs</span>
@@ -230,7 +230,7 @@ export default function DashboardPage() {
               const meta = getExerciseMeta(session.exercise);
               const Icon = meta.icon;
               return (
-                <div key={session.id} className="minimal-card p-4 flex justify-between items-center group hover:border-foreground/60 transition-all duration-300">
+                <div key={session.id} className="minimal-card p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 group hover:border-foreground/60 transition-all duration-300">
                   <div className="flex items-center gap-3">
                     <div className="relative h-8 w-8 flex items-center justify-center border border-border bg-background group-hover:border-foreground transition-colors duration-300">
                       <span className={`absolute inset-0 blur-sm bg-gradient-to-br ${meta.color} opacity-20 group-hover:opacity-45 transition-opacity duration-300`}></span>

@@ -131,23 +131,23 @@ export default function ChatbotPage() {
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="max-w-4xl mx-auto h-[calc(100dvh-220px)] md:h-[calc(100vh-180px)] flex flex-col space-y-4 sm:space-y-8"
+      className="w-full max-w-4xl mx-auto h-[calc(100dvh-132px)] sm:h-[calc(100dvh-170px)] md:h-[calc(100vh-180px)] min-h-[520px] flex flex-col space-y-4 sm:space-y-8"
     >
-      <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border pb-6">
-        <div className="flex items-center gap-4">
+      <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border pb-4 sm:pb-6">
+        <div className="flex items-center gap-3 sm:gap-4 min-w-0">
           <div className="relative h-12 w-12 border border-foreground flex items-center justify-center bg-background">
              <span className="absolute inset-0 blur-md bg-gradient-to-br from-red-600 to-black opacity-20 z-[-1] animate-pulse"></span>
              <Brain className="h-6 w-6 text-foreground" strokeWidth={1.5} />
           </div>
-          <div>
+          <div className="min-w-0">
             <p className="zara-subheading mb-1">Neural Interface</p>
-            <h1 className="text-2xl sm:text-3xl font-light tracking-tight">AI Performance Coach</h1>
+            <h1 className="text-xl sm:text-3xl font-light tracking-tight">AI Performance Coach</h1>
           </div>
         </div>
 
         <button 
           onClick={() => setVoiceEnabled(!voiceEnabled)}
-          className={`p-3 border transition-all sm:self-center self-end ${voiceEnabled ? 'border-foreground bg-foreground text-background' : 'border-border text-muted-foreground'}`}
+          className={`p-3 border transition-all self-start sm:self-center ${voiceEnabled ? 'border-foreground bg-foreground text-background' : 'border-border text-muted-foreground'}`}
         >
           {voiceEnabled ? <Volume2 className="h-4 w-4" /> : <VolumeX className="h-4 w-4" />}
         </button>
@@ -189,7 +189,7 @@ export default function ChatbotPage() {
           )}
         </div>
 
-        <div className="p-4 sm:p-8 border-t border-border bg-background/50 backdrop-blur-sm relative">
+        <div className="p-3 sm:p-8 border-t border-border bg-background/50 backdrop-blur-sm relative">
           {isListening && (
             <div className="absolute -top-12 left-0 right-0 flex justify-center">
                <div className="bg-red-600 text-white px-4 py-1 text-[10px] font-black uppercase tracking-widest animate-pulse flex items-center gap-2">
@@ -206,7 +206,7 @@ export default function ChatbotPage() {
           <div className="flex gap-2 sm:gap-4">
             <button
               onClick={toggleListening}
-              className={`p-3 sm:p-4 border transition-all ${isListening ? 'bg-red-600 border-red-600 text-white animate-pulse' : 'bg-background border-border text-foreground hover:border-foreground'}`}
+              className={`shrink-0 p-3 sm:p-4 border transition-all ${isListening ? 'bg-red-600 border-red-600 text-white animate-pulse' : 'bg-background border-border text-foreground hover:border-foreground'}`}
             >
               {isListening ? <MicOff className="h-5 w-5" /> : <Mic className="h-5 w-5" />}
             </button>
@@ -217,12 +217,12 @@ export default function ChatbotPage() {
               onChange={(e) => setInput(e.target.value)}
               onKeyPress={(e) => e.key === "Enter" && handleSend()}
               placeholder={isListening ? "Listening..." : "Ask for optimization..."}
-              className="flex-1 bg-background border border-border px-4 py-3 sm:px-6 sm:py-4 text-xs sm:text-sm font-light focus:outline-none focus:border-foreground transition-colors animate-none"
+              className="min-w-0 flex-1 bg-background border border-border px-3 py-3 sm:px-6 sm:py-4 text-xs sm:text-sm font-light focus:outline-none focus:border-foreground transition-colors animate-none"
             />
             
             <button
               onClick={() => handleSend()}
-              className="p-3 sm:p-4 bg-foreground text-background hover:bg-background hover:text-foreground border border-foreground transition-all"
+              className="shrink-0 p-3 sm:p-4 bg-foreground text-background hover:bg-background hover:text-foreground border border-foreground transition-all"
             >
               <Send className="h-5 w-5" />
             </button>
@@ -230,7 +230,7 @@ export default function ChatbotPage() {
         </div>
       </div>
 
-      <footer className="flex items-center justify-between text-[10px] uppercase tracking-widest text-muted-foreground font-black">
+      <footer className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-[9px] sm:text-[10px] uppercase tracking-[0.16em] sm:tracking-widest text-muted-foreground font-black">
         <div className="flex items-center gap-2">
           <Sparkles className="h-3 w-3" />
           <span>Neural Voice Assistant Engaged</span>

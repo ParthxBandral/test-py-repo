@@ -59,17 +59,17 @@ export default function ProfilePage() {
     <motion.div
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
-      className="max-w-4xl mx-auto space-y-12 pb-20"
+      className="w-full max-w-4xl mx-auto space-y-8 sm:space-y-12 pb-16 sm:pb-20"
     >
-      <header className="border-b border-border pb-8 flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-left">
-        <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
+      <header className="border-b border-border pb-6 sm:pb-8 flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-left">
+        <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 min-w-0">
           <div className="h-16 w-16 border border-foreground flex items-center justify-center bg-foreground text-background shadow-2xl shrink-0">
              <User className="h-8 w-8" strokeWidth={1} />
           </div>
-          <div className="space-y-1">
+          <div className="space-y-1 min-w-0">
             <p className="zara-subheading">Authenticated Operator</p>
             <h1 className="text-2xl sm:text-3xl font-light tracking-tight">{user.name}</h1>
-            <p className="text-xs text-muted-foreground uppercase tracking-widest">{user.email}</p>
+            <p className="text-xs text-muted-foreground uppercase tracking-widest break-all">{user.email}</p>
           </div>
         </div>
         <button onClick={logout} className="w-full sm:w-auto p-4 border border-border hover:border-red-600 hover:text-red-600 transition-all flex items-center justify-center gap-2">
@@ -80,8 +80,8 @@ export default function ProfilePage() {
 
       {/* Cross-Platform Health Bridge */}
       <section className="space-y-6">
-        <div className="flex items-center justify-between border-b border-border pb-2">
-          <h2 className="text-lg font-light tracking-wide uppercase text-foreground">Cross-Platform Bio-Link</h2>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-border pb-2">
+          <h2 className="text-base sm:text-lg font-light tracking-wide uppercase text-foreground">Cross-Platform Bio-Link</h2>
           <span className="zara-subheading">Neural Sync v2.1</span>
         </div>
 
@@ -124,7 +124,7 @@ export default function ProfilePage() {
             <motion.div 
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="grid grid-cols-2 md:grid-cols-4 gap-4 overflow-hidden pt-6"
+              className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 overflow-hidden pt-6"
             >
               {[
                 { label: "Step Count", value: healthData.steps, icon: ActivityIcon, color: "text-orange-500" },
@@ -147,12 +147,12 @@ export default function ProfilePage() {
 
       {/* Main Settings Menu */}
       <div className="space-y-4">
-        <div className="flex items-center justify-between border-b border-border pb-2">
-          <h2 className="text-lg font-light tracking-wide uppercase text-foreground">Operator Settings</h2>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-border pb-2">
+          <h2 className="text-base sm:text-lg font-light tracking-wide uppercase text-foreground">Operator Settings</h2>
           <span className="zara-subheading">{menuItems.length} Control Nodes</span>
         </div>
         {menuItems.map((item) => (
-          <div key={item.label} className="minimal-card p-6 sm:p-8 group cursor-pointer flex items-center justify-between hover:bg-foreground/5 gap-4">
+          <div key={item.label} className="minimal-card p-5 sm:p-8 group cursor-pointer flex items-center justify-between hover:bg-foreground/5 gap-4">
             <div className="flex items-center gap-4 sm:gap-8 min-w-0">
               <item.icon className="h-6 w-6 text-muted-foreground group-hover:text-foreground transition-colors shrink-0" strokeWidth={1} />
               <div className="space-y-1 min-w-0">
@@ -166,11 +166,11 @@ export default function ProfilePage() {
       </div>
 
       <div className="border border-border p-6 sm:p-8 bg-background flex flex-col md:flex-row items-center justify-between gap-6">
-         <div className="flex items-center gap-4 text-[10px] font-black uppercase tracking-widest text-muted-foreground text-center">
+        <div className="flex items-center gap-4 text-[10px] font-black uppercase tracking-[0.16em] sm:tracking-widest text-muted-foreground text-center md:text-left">
             <Smartphone className="h-4 w-4 shrink-0" />
             <span>Neural OS Compatibility: iOS & Android Ready</span>
          </div>
-         <div className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">
+         <div className="text-[10px] font-black uppercase tracking-[0.16em] sm:tracking-widest text-muted-foreground">
             M1ETREPX v1.0.4-Neural
          </div>
       </div>

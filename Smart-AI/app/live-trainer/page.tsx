@@ -221,19 +221,19 @@ export default function LiveTrainerPage() {
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
-      className="max-w-7xl mx-auto pb-16 space-y-12"
+      className="w-full max-w-7xl mx-auto pb-12 sm:pb-16 space-y-8 sm:space-y-12"
     >
-      <header className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-border pb-6 transition-colors duration-300">
+      <header className="flex flex-col md:flex-row md:items-end justify-between gap-5 sm:gap-6 border-b border-border pb-6 transition-colors duration-300">
         <div>
           <p className="zara-subheading mb-2">Live Studio</p>
-          <h1 className="text-4xl font-light tracking-tight text-foreground flex items-center gap-3">
+          <h1 className="text-3xl sm:text-4xl font-light tracking-tight text-foreground flex items-center gap-3">
             Motion Tracking
           </h1>
         </div>
-        <div className="flex flex-wrap items-center gap-3 md:gap-4 text-sm">
+        <div className="flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-3 md:gap-4 text-sm w-full md:w-auto">
             <button 
               onClick={toggleVoiceCommands}
-              className={`flex items-center gap-2 px-4 py-2 border transition-all ${isListening ? 'bg-red-600 border-red-600 text-white animate-pulse' : 'border-border text-muted-foreground hover:border-foreground'}`}
+              className={`flex w-full sm:w-auto items-center justify-center gap-2 px-4 py-2 border transition-all ${isListening ? 'bg-red-600 border-red-600 text-white animate-pulse' : 'border-border text-muted-foreground hover:border-foreground'}`}
             >
               {isListening ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
               <span className="text-[10px] uppercase tracking-widest font-black">
@@ -243,12 +243,12 @@ export default function LiveTrainerPage() {
 
             <button 
               onClick={() => setVoiceFeedback(!voiceFeedback)}
-              className={`flex items-center gap-2 px-3 py-1.5 border transition-all ${voiceFeedback ? 'border-foreground bg-foreground text-background shadow-lg' : 'border-border text-muted-foreground opacity-50'}`}
+              className={`flex w-full sm:w-auto items-center justify-center gap-2 px-3 py-2 sm:py-1.5 border transition-all ${voiceFeedback ? 'border-foreground bg-foreground text-background shadow-lg' : 'border-border text-muted-foreground opacity-50'}`}
             >
               {voiceFeedback ? <Volume2 className="h-3 w-3" /> : <VolumeX className="h-3 w-3" />}
               <span className="text-[10px] uppercase tracking-widest font-bold">Feedback</span>
             </button>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center justify-between sm:justify-start gap-3 w-full sm:w-auto">
               <span className="text-xs text-muted-foreground uppercase tracking-widest font-bold">
                 Status: <span className="text-foreground font-black">{status}</span>
               </span>
@@ -257,7 +257,7 @@ export default function LiveTrainerPage() {
         </div>
       </header>
 
-      <div className="max-w-5xl mx-auto space-y-12">
+      <div className="w-full max-w-5xl mx-auto space-y-8 sm:space-y-12">
         <AnimatePresence>
           {isRunning && (
             <motion.section
@@ -267,14 +267,14 @@ export default function LiveTrainerPage() {
               className="overflow-hidden"
             >
               <div className="border border-foreground bg-background transition-colors shadow-2xl">
-                <div className="flex items-center justify-between border-b border-foreground p-5">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-foreground p-4 sm:p-5">
                   <span className="text-xs uppercase tracking-widest font-black flex items-center gap-2 text-foreground">
                     <div className="h-2 w-2 rounded-full bg-zara-red animate-pulse" />
                     Live Stream Active
                   </span>
                   <button 
                     onClick={stopTrainer}
-                    className="text-xs uppercase tracking-[0.2em] font-black hover:text-zara-red transition-colors flex items-center gap-2 text-foreground group"
+                    className="text-xs uppercase tracking-[0.16em] sm:tracking-[0.2em] font-black hover:text-zara-red transition-colors flex items-center gap-2 text-foreground group self-start sm:self-auto"
                   >
                     <X className="h-4 w-4 group-hover:rotate-90 transition-transform" strokeWidth={3} /> Terminate
                   </button>
@@ -289,18 +289,18 @@ export default function LiveTrainerPage() {
                     />
                   </div>
 
-                  <div className="p-6 sm:p-10 flex flex-col justify-center space-y-6 sm:space-y-12 bg-background">
+                  <div className="p-5 sm:p-10 flex flex-col justify-center space-y-6 sm:space-y-12 bg-background">
                     <div className="space-y-4">
                       <p className="zara-subheading">Module</p>
-                      <h2 className="text-5xl font-light tracking-tighter capitalize text-foreground">
+                      <h2 className="text-3xl sm:text-5xl font-light tracking-tighter capitalize text-foreground">
                         {stats.exercise || "..."}
                       </h2>
                     </div>
 
                     <div className="space-y-4 border-t border-border pt-10">
                       <p className="zara-subheading">Progress</p>
-                      <div className="flex items-baseline gap-4">
-                        <span className="text-8xl font-serif tracking-tighter text-foreground leading-none">
+                      <div className="flex items-baseline gap-3 sm:gap-4">
+                        <span className="text-6xl sm:text-8xl font-serif tracking-tighter text-foreground leading-none">
                           {stats.rep_count}
                         </span>
                         <span className="text-xs uppercase tracking-[0.3em] font-black text-muted-foreground">Reps</span>
@@ -314,18 +314,18 @@ export default function LiveTrainerPage() {
         </AnimatePresence>
 
         <div className="space-y-10">
-          <div className="flex items-center justify-between border-b border-border pb-4">
-            <h3 className="text-lg font-light tracking-wide uppercase text-foreground">Exercise Catalog</h3>
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-border pb-4">
+            <h3 className="text-base sm:text-lg font-light tracking-wide uppercase text-foreground">Exercise Catalog</h3>
             <span className="zara-subheading">{exercises.length} Protocols Loaded</span>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             {exercises.map((ex) => {
               const Icon = ex.icon;
               return (
-                <div key={ex.id} className="minimal-card group flex flex-col justify-between h-full space-y-12">
+                <div key={ex.id} className="minimal-card group flex flex-col justify-between h-full space-y-8 sm:space-y-12">
                   <div>
-                    <div className="relative h-16 w-16 flex items-center justify-center border-2 border-border bg-background mb-10 z-10 transition-all group-hover:border-foreground">
+                    <div className="relative h-14 w-14 sm:h-16 sm:w-16 flex items-center justify-center border-2 border-border bg-background mb-6 sm:mb-10 z-10 transition-all group-hover:border-foreground">
                       <span className={`absolute inset-0 blur-md bg-gradient-to-br ${ex.color} opacity-40 dark:opacity-20 z-[-1] animate-pulse group-hover:opacity-80 dark:group-hover:opacity-40 transition-opacity`}></span>
                       <Icon className="h-7 w-7 text-foreground" strokeWidth={1} />
                     </div>

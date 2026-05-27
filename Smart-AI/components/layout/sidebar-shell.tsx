@@ -80,9 +80,9 @@ export function SidebarShell({ children }: { children: ReactNode }) {
   }
 
   return (
-    <div className="min-h-screen flex bg-background text-foreground font-sans transition-colors duration-300">
+    <div className="min-h-screen flex bg-background text-foreground font-sans transition-colors duration-300 overflow-x-hidden">
       {/* ─── MOBILE TOP BAR ─── */}
-      <div className="fixed top-0 left-0 right-0 z-50 flex md:hidden items-center justify-between px-5 py-4 bg-background/95 backdrop-blur-md border-b border-border">
+      <div className="fixed top-0 left-0 right-0 z-50 flex md:hidden items-center justify-between px-4 py-3 bg-background/95 backdrop-blur-md border-b border-border">
         <span className="relative text-xl font-serif tracking-tight text-foreground inline-block z-10">
           <span className="absolute inset-0 blur-lg bg-gradient-to-r from-red-600 via-foreground/20 to-red-600 opacity-30 dark:opacity-40 z-[-1] animate-pulse"></span>
           M1ETREP<span className="text-red-600 dark:text-red-500">X</span>
@@ -105,7 +105,7 @@ export function SidebarShell({ children }: { children: ReactNode }) {
             onClick={() => setMobileMenuOpen(false)}
           />
           {/* Panel */}
-          <div className="absolute top-0 left-0 bottom-0 w-72 bg-background border-r border-border flex flex-col justify-between px-8 py-20 overflow-y-auto animate-[slideInLeft_0.2s_ease-out]">
+          <div className="absolute top-0 left-0 bottom-0 w-[86vw] max-w-72 bg-background border-r border-border flex flex-col justify-between px-6 py-20 overflow-y-auto animate-[slideInLeft_0.2s_ease-out]">
             <div className="space-y-10">
               <nav className="flex flex-col gap-1">
                 {navItems.map((item) => {
@@ -210,7 +210,7 @@ export function SidebarShell({ children }: { children: ReactNode }) {
       </aside>
 
       {/* ─── MAIN CONTENT ─── */}
-      <main className="flex-1 min-h-screen overflow-y-auto px-4 sm:px-6 md:px-10 pt-20 md:pt-10 pb-10 flex flex-col bg-background transition-colors">
+      <main className="flex-1 min-w-0 min-h-screen overflow-y-auto overflow-x-hidden px-4 sm:px-6 md:px-10 pt-20 md:pt-10 pb-10 flex flex-col bg-background transition-colors">
         {children}
       </main>
     </div>

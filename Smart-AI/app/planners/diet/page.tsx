@@ -53,15 +53,15 @@ export default function DietPlannerPage() {
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.35 }}
-      className="grid grid-cols-1 xl:grid-cols-[minmax(0,1.3fr)_minmax(0,1.2fr)] gap-6"
+      className="w-full grid grid-cols-1 xl:grid-cols-[minmax(0,1.3fr)_minmax(0,1.2fr)] gap-5 sm:gap-6"
     >
-      <section className="glass-panel p-5 space-y-4">
-        <div className="flex items-center justify-between">
+      <section className="glass-panel p-4 sm:p-5 space-y-4 min-w-0">
+        <div className="flex items-start sm:items-center justify-between gap-4">
           <div>
-            <p className="text-xs uppercase tracking-[0.3em] text-white/40">
+            <p className="text-[10px] sm:text-xs uppercase tracking-[0.18em] sm:tracking-[0.3em] text-muted-foreground">
               AI Diet Planner
             </p>
-            <h1 className="text-xl font-semibold mt-1">
+            <h1 className="text-lg sm:text-xl font-semibold mt-1">
               Compose nutrition like a system
             </h1>
           </div>
@@ -71,9 +71,9 @@ export default function DietPlannerPage() {
         </div>
 
         <form onSubmit={handleGenerate} className="space-y-3 text-xs">
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div className="space-y-1">
-              <label className="text-white/70">Objective</label>
+              <label className="text-muted-foreground">Objective</label>
               <select className="w-full rounded-2xl border border-glass-border bg-white/5 px-3 py-2.5 text-sm outline-none">
                 <option>Recomp / lean gain</option>
                 <option>Fat loss</option>
@@ -81,7 +81,7 @@ export default function DietPlannerPage() {
               </select>
             </div>
             <div className="space-y-1">
-              <label className="text-white/70">Diet preference</label>
+              <label className="text-muted-foreground">Diet preference</label>
               <select className="w-full rounded-2xl border border-glass-border bg-white/5 px-3 py-2.5 text-sm outline-none">
                 <option>Flexible</option>
                 <option>Plant-forward</option>
@@ -90,9 +90,9 @@ export default function DietPlannerPage() {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div className="space-y-1">
-              <label className="text-white/70">Bodyweight (kg)</label>
+              <label className="text-muted-foreground">Bodyweight (kg)</label>
               <input
                 type="number"
                 min={35}
@@ -102,7 +102,7 @@ export default function DietPlannerPage() {
               />
             </div>
             <div className="space-y-1">
-              <label className="text-white/70">Training days / week</label>
+              <label className="text-muted-foreground">Training days / week</label>
               <input
                 type="number"
                 min={1}
@@ -114,7 +114,7 @@ export default function DietPlannerPage() {
           </div>
 
           <div className="space-y-1">
-            <label className="text-white/70">Notes / constraints</label>
+            <label className="text-muted-foreground">Notes / constraints</label>
             <textarea
               rows={3}
               placeholder="No lactose, prefers 2 big meals + 1 snack, trains evenings..."
@@ -124,7 +124,7 @@ export default function DietPlannerPage() {
 
           <button
             type="submit"
-            className="mt-2 inline-flex items-center justify-center gap-2 rounded-2xl bg-electric-lime px-4 py-2.5 text-sm font-semibold text-black shadow-[0_18px_45px_rgba(204,255,0,0.35)] hover:brightness-110 transition-transform hover:-translate-y-0.5 disabled:opacity-70 disabled:hover:translate-y-0"
+            className="mt-2 inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-2xl bg-electric-lime px-4 py-2.5 text-sm font-semibold text-black shadow-[0_18px_45px_rgba(204,255,0,0.35)] hover:brightness-110 transition-transform hover:-translate-y-0.5 disabled:opacity-70 disabled:hover:translate-y-0"
             disabled={loading}
           >
             {loading ? "Composing protocol..." : "Generate nutrition map"}
@@ -133,12 +133,12 @@ export default function DietPlannerPage() {
         </form>
       </section>
 
-      <section className="glass-panel p-5 flex flex-col gap-3">
-        <div className="flex items-center justify-between">
+      <section className="glass-panel p-4 sm:p-5 flex flex-col gap-3 min-w-0">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <p className="text-sm font-semibold">AI Output – PDF style card</p>
           <button
             type="button"
-            className="inline-flex items-center gap-1 rounded-xl border border-glass-border bg-white/5 px-3 py-1.5 text-[11px] text-white/70 hover:bg-white/10"
+            className="inline-flex w-full sm:w-auto items-center justify-center gap-1 rounded-xl border border-glass-border bg-white/5 px-3 py-1.5 text-[11px] text-muted-foreground hover:bg-white/10"
           >
             <Download className="h-3 w-3" />
             Download PDF (stub)
@@ -148,7 +148,7 @@ export default function DietPlannerPage() {
         <div className="relative flex-1 rounded-3xl border border-white/20 bg-gradient-to-br from-white/10 via-white/5 to-transparent px-5 py-4 text-xs overflow-hidden">
           {loading && (
             <div className="absolute inset-0 bg-black/40 flex items-center justify-center z-10">
-              <div className="h-20 w-64 overflow-hidden rounded-2xl border border-electric-lime/60 bg-black/60">
+              <div className="h-20 w-[80vw] max-w-64 overflow-hidden rounded-2xl border border-electric-lime/60 bg-black/60">
                 <div className="h-full w-1/2 bg-gradient-to-r from-transparent via-electric-lime/60 to-transparent animate-shimmer" />
               </div>
             </div>

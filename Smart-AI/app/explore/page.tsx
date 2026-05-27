@@ -320,7 +320,7 @@ export default function ExplorePage() {
     <motion.div
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
-      className="max-w-7xl mx-auto space-y-12 pb-24"
+      className="w-full max-w-7xl mx-auto space-y-8 sm:space-y-12 pb-16 sm:pb-24"
     >
       {/* Leaflet popups custom styling override */}
       <style dangerouslySetInnerHTML={{__html: `
@@ -341,20 +341,20 @@ export default function ExplorePage() {
         }
       `}} />
 
-      <header className="border-b border-border pb-10 flex flex-col lg:flex-row justify-between items-start lg:items-end gap-6 lg:gap-10">
+      <header className="border-b border-border pb-8 sm:pb-10 flex flex-col lg:flex-row justify-between items-start lg:items-end gap-6 lg:gap-10">
         <div className="space-y-2">
           <p className="zara-subheading">Neural Location Discovery</p>
-          <h1 className="text-5xl font-light tracking-tighter text-foreground">Nearby Protocols</h1>
+          <h1 className="text-3xl sm:text-5xl font-light tracking-tighter text-foreground">Nearby Protocols</h1>
         </div>
         
-        <div className="w-full lg:w-auto flex flex-col sm:flex-row gap-4">
+        <div className="w-full lg:w-auto flex flex-col sm:flex-row gap-3 sm:gap-4">
            <form onSubmit={handleManualSearch} className="relative flex-1 sm:w-80">
               <input 
                 type="text" 
                 value={manualQuery}
                 onChange={(e) => setManualQuery(e.target.value)}
                 placeholder="Enter City or Zip Code..."
-                className="w-full bg-background border border-border px-6 py-4 text-xs font-black uppercase tracking-widest focus:outline-none focus:border-foreground transition-all pr-12"
+                className="w-full bg-background border border-border px-4 sm:px-6 py-4 text-xs font-black uppercase tracking-[0.14em] sm:tracking-widest focus:outline-none focus:border-foreground transition-all pr-12"
               />
               <button type="submit" className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
                 <Search className="h-4 w-4" />
@@ -363,7 +363,7 @@ export default function ExplorePage() {
            <button
             onClick={handleScan}
             disabled={isScanning}
-            className="flex items-center justify-center gap-3 px-8 py-4 bg-foreground text-background text-[10px] font-black uppercase tracking-widest hover:bg-background hover:text-foreground border border-foreground transition-all relative overflow-hidden group"
+            className="flex items-center justify-center gap-3 px-6 sm:px-8 py-4 bg-foreground text-background text-[10px] font-black uppercase tracking-[0.16em] sm:tracking-widest hover:bg-background hover:text-foreground border border-foreground transition-all relative overflow-hidden group"
           >
             {isScanning ? (
               <span className="flex items-center gap-2">
@@ -377,7 +377,7 @@ export default function ExplorePage() {
       </header>
 
       {error && (
-        <div className="bg-red-600/5 border border-red-600/20 p-8 flex items-center gap-6 text-red-600 animate-pulse">
+        <div className="bg-red-600/5 border border-red-600/20 p-5 sm:p-8 flex items-start sm:items-center gap-4 sm:gap-6 text-red-600 animate-pulse">
           <AlertCircle className="h-6 w-6 shrink-0" />
           <div className="space-y-1">
             <p className="text-[11px] uppercase tracking-[0.2em] font-black">Interface Conflict Detected</p>
@@ -388,7 +388,7 @@ export default function ExplorePage() {
 
 
       {/* Modern 3-Column Split for exploration matrix */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10">
         
         {/* Column 1: Config and Filters (Span 3) */}
         <aside className="lg:col-span-3 space-y-8 order-1">
@@ -434,7 +434,7 @@ export default function ExplorePage() {
         </aside>
 
         {/* Column 2: Location List (Span 5) */}
-        <div className="lg:col-span-5 space-y-6 max-h-[75vh] overflow-y-auto pr-2 order-3 lg:order-2">
+        <div className="lg:col-span-5 space-y-6 max-h-none lg:max-h-[75vh] overflow-visible lg:overflow-y-auto pr-0 lg:pr-2 order-3 lg:order-2">
           {locations.length === 0 && !isScanning && !error && (
             <div className="h-96 flex flex-col items-center justify-center border border-dashed border-border text-muted-foreground opacity-40">
                <Compass className="h-20 w-20 mb-6 animate-[spin_10s_linear_infinite]" strokeWidth={1} />
@@ -451,14 +451,14 @@ export default function ExplorePage() {
                   initial={{ opacity: 0, y: 15 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.95 }}
-                  className="minimal-card p-8 space-y-6 group relative"
+                  className="minimal-card p-5 sm:p-8 space-y-6 group relative"
                 >
-                  <div className="flex justify-between items-start gap-4">
-                    <div className="space-y-1">
+                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
+                    <div className="space-y-1 min-w-0">
                       <p className="zara-subheading text-red-600">{loc.type}</p>
-                      <h3 className="text-2xl font-light tracking-tighter leading-tight">{loc.name}</h3>
+                      <h3 className="text-xl sm:text-2xl font-light tracking-tighter leading-tight break-words">{loc.name}</h3>
                     </div>
-                    <div className="px-3 py-1.5 border border-foreground bg-background text-[10px] font-black uppercase tracking-widest shrink-0">
+                    <div className="self-start px-3 py-1.5 border border-foreground bg-background text-[10px] font-black uppercase tracking-widest shrink-0">
                       {loc.distance} km
                     </div>
                   </div>
@@ -475,7 +475,7 @@ export default function ExplorePage() {
                        )}
                     </div>
                     
-                    <div className="flex items-center gap-4 text-[9px] text-muted-foreground uppercase tracking-widest font-black">
+                    <div className="flex items-center gap-4 text-[9px] text-muted-foreground uppercase tracking-[0.16em] sm:tracking-widest font-black">
                        <span className="flex items-center gap-1.5">
                           <MapPin className="h-3 w-3" /> {loc.lat.toFixed(3)}, {loc.lon.toFixed(3)}
                        </span>
@@ -486,7 +486,7 @@ export default function ExplorePage() {
                     onClick={() => window.open(`https://www.google.com/maps/dir/?api=1&destination=${loc.lat},${loc.lon}`, '_blank')}
                     className="w-full py-4 border-t border-border flex items-center justify-between group-hover:border-foreground transition-all"
                   >
-                    <span className="text-[10px] font-black uppercase tracking-[0.25em] group-hover:translate-x-2 transition-transform">Initiate Routing</span>
+                    <span className="text-[10px] font-black uppercase tracking-[0.16em] sm:tracking-[0.25em] group-hover:translate-x-2 transition-transform">Initiate Routing</span>
                     <ArrowUpRight className="h-4 w-4 group-hover:-translate-y-1.5 transition-transform" />
                   </button>
                 </motion.div>
@@ -497,9 +497,9 @@ export default function ExplorePage() {
 
         {/* Column 3: Satellite Telemetry - Leaflet Map container (Span 4) */}
         <div className="lg:col-span-4 order-2 lg:order-3">
-          <div className="sticky top-10 space-y-6">
-            <div className="flex items-center justify-between border-b border-border pb-2">
-              <h2 className="text-lg font-light tracking-wide uppercase text-foreground">Satellite Grid</h2>
+          <div className="lg:sticky lg:top-10 space-y-6">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-border pb-2">
+              <h2 className="text-base sm:text-lg font-light tracking-wide uppercase text-foreground">Satellite Grid</h2>
               <div className="inline-flex items-center gap-2 px-2 py-1 bg-foreground/5 border border-border">
                 <Compass className={`h-3 w-3 ${isScanning ? 'animate-spin' : ''} text-red-600`} strokeWidth={1.5} />
                 <span className="text-[9px] uppercase tracking-widest text-muted-foreground font-bold">
@@ -509,7 +509,7 @@ export default function ExplorePage() {
             </div>
             
             <div className="relative w-full border border-foreground bg-foreground/5 overflow-hidden">
-              <div ref={mapRef} className="w-full h-[350px] lg:h-[500px] z-10" />
+              <div ref={mapRef} className="w-full h-[280px] sm:h-[350px] lg:h-[500px] z-10" />
               {!leafletLoaded && (
                 <div className="absolute inset-0 flex flex-col items-center justify-center p-8 text-center space-y-6 bg-zinc-950 z-20">
                   <div className="relative h-20 w-20 border border-dashed border-border flex items-center justify-center rounded-full animate-[spin_30s_linear_infinite]">
@@ -524,12 +524,12 @@ export default function ExplorePage() {
 
       </div>
 
-      <footer className="pt-12 border-t border-border flex flex-col md:flex-row justify-between items-center gap-8 text-[10px] uppercase tracking-widest text-muted-foreground font-black">
-        <div className="flex items-center gap-3 text-foreground">
+      <footer className="pt-10 sm:pt-12 border-t border-border flex flex-col md:flex-row justify-between items-start md:items-center gap-5 sm:gap-8 text-[10px] uppercase tracking-[0.16em] sm:tracking-widest text-muted-foreground font-black">
+        <div className="flex items-center gap-3 text-foreground min-w-0">
           <div className="h-2 w-2 rounded-full bg-emerald-600 animate-pulse" />
-          <span>Coordinate Sync: {userCoords ? `${userCoords.lat.toFixed(4)}, ${userCoords.lon.toFixed(4)}` : "Awaiting Protocol"}</span>
+          <span className="break-all">Coordinate Sync: {userCoords ? `${userCoords.lat.toFixed(4)}, ${userCoords.lon.toFixed(4)}` : "Awaiting Protocol"}</span>
         </div>
-        <div className="flex gap-10">
+        <div className="flex flex-col sm:flex-row gap-2 sm:gap-10">
            <span>Neural Grid v3.1</span>
            <span>Global Map Matrix Active</span>
         </div>
