@@ -49,49 +49,46 @@ export default function LiveTrainerPage() {
     { id: "lunge", title: "Lunges", icon: Target, desc: "Bilateral knee depth tracking.", color: "from-emerald-400 to-green-500" },
   ];
 
-  // Initialize Camera for iPhone/Mobile
+  // Initialize Camera for iPhone/Mobile - Simple approach
   const initializeCamera = async () => {
     try {
-      // Simple constraints that work better on iOS Safari
-      const constraints = {
-        video: {
-          facingMode: 'user'
-        },
-        audio: false
-      };
+      console.log('Starting camera initialization...');
       
-      console.log('Requesting camera with constraints:', constraints);
-      const stream = await navigator.mediaDevices.getUserMedia(constraints);
-      console.log('Got stream:', stream);
+      // Extremely simple constraints for iOS
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: 'user' },
+        audio: false
+      });
+      
+      console.log('Camera stream obtained:', stream);
+      console.log('Video tracks:', stream.getVideoTracks());
       
       streamRef.current = stream;
       
+      // Make absolutely sure the video element gets the stream
       if (videoRef.current) {
-        console.log('Setting srcObject');
+        console.log('Attaching stream to video element');
         videoRef.current.srcObject = stream;
         
-        // Wait for video to be ready
-        videoRef.current.onloadedmetadata = () => {
-          console.log('Video metadata loaded, playing');
-          videoRef.current?.play().catch(err => {
-            console.error('Play error:', err);
-          });
-        };
-        
-        // Force play
-        setTimeout(() => {
-          if (videoRef.current) {
-            videoRef.current.play().catch(err => {
-              console.error('Delayed play error:', err);
-            });
-          }
-        }, 500);
+        // Try multiple ways to ensure it plays
+        try {
+          await videoRef.current.play();
+          console.log('Video playing successfully');
+        } catch (e) {
+          console.error('First play attempt failed:', e);
+          setTimeout(() => {
+            videoRef.current?.play().catch(e => console.error('Second play attempt failed:', e));
+          }, 1000);
+        }
+      } else {
+        console.error('Video ref is null!');
       }
       
       setCameraPermission("granted");
       return true;
     } catch (error: any) {
-      console.error('Camera error:', error);
+      console.error('Camera error - Name:', error.name, 'Message:', error.message);
+      
       if (error.name === 'NotAllowedError') {
         setCameraPermission("denied");
         speak("Camera permission denied. Please enable camera in Safari settings.");
@@ -100,7 +97,7 @@ export default function LiveTrainerPage() {
         speak("No camera found on this device.");
       } else {
         setCameraPermission("error");
-        speak("Camera initialization failed.");
+        speak("Camera initialization failed: " + error.message);
       }
       return false;
     }
@@ -381,22 +378,20 @@ export default function LiveTrainerPage() {
                 <div className="grid md:grid-cols-[1.5fr_1fr] gap-0">
                   <div className="relative aspect-video md:aspect-auto min-h-[250px] sm:min-h-[350px] md:min-h-[450px] border-b md:border-b-0 md:border-r border-foreground bg-black flex items-center justify-center overflow-hidden">
                     {isRunning ? (
-                      <>
-                        <video 
-                          ref={videoRef}
-                          autoPlay={true}
-                          playsInline={true}
-                          muted={true}
-                          className="w-full h-full"
-                          style={{ 
-                            display: 'block',
-                            objectFit: 'cover',
-                            backgroundColor: '#000',
-                            WebkitTransform: 'scaleX(-1)',
-                            transform: 'scaleX(-1)',
-                          }}
-                        />
-                      </>
+                      <video 
+                        ref={videoRef}
+                        autoPlay
+                        playsInline
+                        muted
+                        className="w-full h-full"
+                        style={{
+                          display: 'block',
+                          width: '100%',
+                          height: '100%',
+                          backgroundColor: '#000000',
+                          objectFit: 'cover'
+                        }}
+                      />
                     ) : (
                       <div className="text-center text-muted-foreground">
                         <Camera className="h-12 w-12 mx-auto mb-4 opacity-50" />
