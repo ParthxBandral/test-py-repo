@@ -1,5 +1,6 @@
 import { spawn, exec } from 'node:child_process';
 import path from 'node:path';
+import fs from 'node:fs';
 import { NextResponse } from 'next/server';
 
 export async function POST(request: Request): Promise<Response> {
@@ -25,10 +26,14 @@ export async function POST(request: Request): Promise<Response> {
     const cwd = path.resolve(process.cwd(), '..');
     const scriptPath = path.resolve(cwd, 'live_trainer_web.py');
 
-    console.log(`Starting live trainer for ${exercise} at ${scriptPath}`);
+    // Find the correct python executable to use (prefer absolute path to system python over empty .venv python)
+    const systemPython = 'C:\\Users\\Parth\\AppData\\Local\\Programs\\Python\\Python312\\python.exe';
+    const pythonCmd = fs.existsSync(systemPython) ? systemPython : 'python';
+
+    console.log(`Starting live trainer for ${exercise} using ${pythonCmd} at ${scriptPath}`);
 
     // Spawn the python process detached so it can run independently of the HTTP request lifecycle
-    const pythonProcess = spawn('python', ['live_trainer_web.py', exercise], {
+    const pythonProcess = spawn(pythonCmd, ['live_trainer_web.py', exercise], {
       cwd: cwd,
       detached: true,
       stdio: 'ignore'

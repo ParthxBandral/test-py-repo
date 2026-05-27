@@ -260,7 +260,23 @@ def generate_frames():
                 text_x = (width - text_size[0]) // 2
                 cv2.putText(frame, label, (text_x, 50), cv2.FONT_HERSHEY_SIMPLEX, 1.0, color, 3)
             else:
-                global_form_status = "Using Angle Tracker (No ML Model)"
+                if global_exercise == "squat":
+                    main_angle = min(angles["left_knee"], angles["right_knee"])
+                    global_form_status = f"Knee: {int(main_angle)}° (Target: <90°)"
+                elif global_exercise == "curl":
+                    main_angle = min(angles["left_elbow"], angles["right_elbow"])
+                    global_form_status = f"Elbow: {int(main_angle)}° (Target: <45°)"
+                elif global_exercise == "pushup":
+                    main_angle = min(angles["left_elbow"], angles["right_elbow"])
+                    global_form_status = f"Elbow: {int(main_angle)}° (Target: <90°)"
+                elif global_exercise == "lunge":
+                    min_knee = min(angles["left_knee"], angles["right_knee"])
+                    global_form_status = f"Knee: {int(min_knee)}° (Target: <90°)"
+                elif global_exercise == "jumping_jack":
+                    wrist_above_shoulder = angles["wrist_y"] < angles["shoulder_y"]
+                    global_form_status = "Extended Form ✓" if wrist_above_shoulder else "Ready"
+                else:
+                    global_form_status = "Analyzing posture..."
 
             current_time = time.time()
             if global_exercise == "squat":
@@ -348,4 +364,4 @@ if __name__ == '__main__':
         choice = sys.argv[1].lower()
         if choice in ["squat", "pushup", "curl", "lunge", "jumping_jack"]:
             global_exercise = choice
-    app.run(host='127.0.0.1', port=5000, debug=False, threaded=True)
+    app.run(host='0.0.0.0', port=5000, debug=False, threaded=True)
